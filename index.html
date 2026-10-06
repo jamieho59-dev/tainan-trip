@@ -166,6 +166,12 @@
       const voteList = document.querySelector('#vote-list');
       const voteStatus = document.querySelector('#vote-status');
       const voteHeaders = { apikey: supabaseKey, Authorization: `Bearer ${supabaseKey}` };
+      const voteLockKey = 'tainan-trip-vote';
+
+      const lockVoteForm = (choice) => {
+        voteForm.querySelectorAll('input, select, button').forEach((field) => { field.disabled = true; });
+        voteStatus.textContent = `你已經投過了：${choice}`;
+      };
 
       const renderVotes = (votes) => {
         voteList.replaceChildren();
@@ -206,7 +212,8 @@
           });
           if (!response.ok) throw new Error('submit failed');
           voteForm.reset();
-          voteStatus.textContent = '投票成功！';
+          localStorage.setItem(voteLockKey, JSON.stringify({ choice }));
+          lockVoteForm(choice);
           await loadVotes();
         } catch {
           voteStatus.textContent = '投票沒有送出，請稍後再試。';
@@ -216,6 +223,8 @@
       });
 
       loadVotes();
+      const previousVote = JSON.parse(localStorage.getItem(voteLockKey) || 'null');
+      if (previousVote && previousVote.choice) lockVoteForm(previousVote.choice);
     })();
   </script>
 </body>
