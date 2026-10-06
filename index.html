@@ -35,11 +35,28 @@
     .timeline time { display:block; width:max-content; margin:0 0 20px 10px; padding:3px 10px; color:#765d45; background:var(--paper); border:2px solid var(--accent); border-radius:999px; font-size:.95rem; }
     .timeline .stop > div { min-height:164px; padding:14px; background:var(--card); border:1px solid var(--line); border-radius:16px; box-shadow:0 3px 10px #6b58401a; }
     .timeline .note { margin-top:5px; }
+    .view-switch { display:flex; flex-wrap:wrap; gap:8px; margin:22px 0 4px; }
+    .view-switch button { border:1px solid var(--line); border-radius:999px; padding:8px 14px; background:var(--card); color:var(--ink); font:inherit; cursor:pointer; }
+    .view-switch button[aria-pressed="true"] { background:var(--accent); color:#fff; border-color:var(--accent); }
+    .stop-check { display:flex; align-items:center; gap:7px; margin-top:12px; color:var(--muted); font-size:.82rem; cursor:pointer; }
+    .stop-check input { width:1.1em; height:1.1em; accent-color:var(--accent); }
+    .stop.is-done .place, .stop.is-done .note { opacity:.52; text-decoration:line-through; }
+    .vote-panel { margin-top:28px; padding:20px; background:var(--card); border:1px solid var(--line); border-radius:18px; }
+    .vote-panel h2 { margin:0; font-size:1.35rem; }
+    .vote-intro { margin:6px 0 16px; color:var(--muted); font-size:.92rem; }
+    .vote-form { display:grid; gap:10px; }
+    .vote-form input, .vote-form select, .vote-form button { width:100%; padding:11px 12px; border:1px solid var(--line); border-radius:10px; background:var(--paper); color:var(--ink); font:inherit; }
+    .vote-form button { background:var(--accent); color:#fff; border-color:var(--accent); font-weight:800; cursor:pointer; }
+    .vote-form button:disabled { opacity:.55; cursor:wait; }
+    .vote-status { min-height:1.5em; margin:4px 0 0; color:var(--muted); font-size:.88rem; }
+    .vote-list { display:grid; gap:8px; margin:16px 0 0; padding:0; list-style:none; }
+    .vote-item { display:flex; justify-content:space-between; gap:12px; padding:10px 12px; background:var(--paper); border-radius:10px; font-size:.92rem; }
     @media (min-width:560px) { main { padding-top:40px; } .stop { grid-template-columns:96px 1fr; padding:18px 20px; } }
   </style>
 </head>
 <body>
   <main>
+    <img src="images/cover.webp" alt="台南兩天一夜旅行封面" style="display:block; width:100%; height:auto; margin:0 0 20px; border-radius:24px;">
     <header>
       <p class="eyebrow">小旅行提案 · 示意版</p>
       <h1>我們的台南之旅</h1>
@@ -54,23 +71,29 @@
       </div>
     </header>
 
+    <nav class="view-switch" aria-label="行程檢視">
+      <button type="button" data-view="day1" aria-pressed="true">今天：第一天</button>
+      <button type="button" data-view="day2" aria-pressed="false">今天：第二天</button>
+      <button type="button" data-view="all" aria-pressed="false">看全部</button>
+    </nav>
+
     <section class="day" aria-labelledby="day1">
       <div class="day-title"><h2 id="day1">第一天</h2><span>老城散步與夜食</span></div>
       <div class="stops timeline">
-        <article class="stop"><time datetime="09:30">09:30</time><div><p class="place">示意店家｜府城早餐店</p><p class="note">用一碗熱湯和米糕開啟旅程，先把腳步放慢。</p></div></article>
-        <article class="stop"><time datetime="11:00">11:00</time><div><p class="place">赤崁樓</p><p class="note">沿著紅磚古蹟散步，看看台南留下的時光痕跡。</p></div></article>
-        <article class="stop"><time datetime="14:30">14:30</time><div><p class="place">神農街與海安路</p><p class="note">逛老屋小店、拍街景，找一間咖啡店休息。</p></div></article>
-        <article class="stop"><time datetime="18:00">18:00</time><div><p class="place">示意店家｜國華街晚餐</p><p class="note">把小吃排成一桌，邊吃邊交換今天最喜歡的風景。</p></div></article>
+        <article class="stop"><time datetime="09:30">09:30</time><div><p class="place">示意店家｜府城早餐店</p><p class="note">用一碗熱湯和米糕開啟旅程，先把腳步放慢。</p><label class="stop-check"><input type="checkbox" data-stop="day1-1">完成</label></div></article>
+        <article class="stop"><time datetime="11:00">11:00</time><div><p class="place">赤崁樓</p><p class="note">沿著紅磚古蹟散步，看看台南留下的時光痕跡。</p><label class="stop-check"><input type="checkbox" data-stop="day1-2">完成</label></div></article>
+        <article class="stop"><time datetime="14:30">14:30</time><div><p class="place">神農街與海安路</p><p class="note">逛老屋小店、拍街景，找一間咖啡店休息。</p><label class="stop-check"><input type="checkbox" data-stop="day1-3">完成</label></div></article>
+        <article class="stop"><time datetime="18:00">18:00</time><div><p class="place">示意店家｜國華街晚餐</p><p class="note">把小吃排成一桌，邊吃邊交換今天最喜歡的風景。</p><label class="stop-check"><input type="checkbox" data-stop="day1-4">完成</label></div></article>
       </div>
     </section>
 
     <section class="day" aria-labelledby="day2">
       <div class="day-title"><h2 id="day2">第二天</h2><span>海風、樹影與甜點</span></div>
       <div class="stops timeline">
-        <article class="stop"><time datetime="09:00">09:00</time><div><p class="place">示意店家｜巷口豆花</p><p class="note">清爽甜湯配一段晨間散步，為第二天補充元氣。</p></div></article>
-        <article class="stop"><time datetime="10:30">10:30</time><div><p class="place">安平古堡與老街</p><p class="note">走進安平的巷弄，看古堡、老樹和鹹鹹的海風。</p></div></article>
-        <article class="stop"><time datetime="14:00">14:00</time><div><p class="place">四草綠色隧道</p><p class="note">搭船穿過水上綠蔭，讓城市旅行換成一場小探險。</p></div></article>
-        <article class="stop"><time datetime="16:30">16:30</time><div><p class="place">示意店家｜伴手禮與點心</p><p class="note">買份喜歡的台南味道，帶著滿足的心情返程。</p></div></article>
+        <article class="stop"><time datetime="09:00">09:00</time><div><p class="place">示意店家｜巷口豆花</p><p class="note">清爽甜湯配一段晨間散步，為第二天補充元氣。</p><label class="stop-check"><input type="checkbox" data-stop="day2-1">完成</label></div></article>
+        <article class="stop"><time datetime="10:30">10:30</time><div><p class="place">安平古堡與老街</p><p class="note">走進安平的巷弄，看古堡、老樹和鹹鹹的海風。</p><label class="stop-check"><input type="checkbox" data-stop="day2-2">完成</label></div></article>
+        <article class="stop"><time datetime="14:00">14:00</time><div><p class="place">四草綠色隧道</p><p class="note">搭船穿過水上綠蔭，讓城市旅行換成一場小探險。</p><label class="stop-check"><input type="checkbox" data-stop="day2-3">完成</label></div></article>
+        <article class="stop"><time datetime="16:30">16:30</time><div><p class="place">示意店家｜伴手禮與點心</p><p class="note">買份喜歡的台南味道，帶著滿足的心情返程。</p><label class="stop-check"><input type="checkbox" data-stop="day2-4">完成</label></div></article>
       </div>
     </section>
 
@@ -84,10 +107,116 @@
         <article class="stop"><time>集合地點</time><div><p class="place">均衡食堂門口</p></div></article>
       </div>
     </section>
+    <section class="vote-panel" aria-labelledby="dinner-vote-title">
+      <h2 id="dinner-vote-title">晚餐投票</h2>
+      <p class="vote-intro">輸入暱稱、選一個選項，送出後大家都看得到。</p>
+      <form class="vote-form" id="vote-form">
+        <label for="vote-nickname">你的暱稱</label>
+        <input id="vote-nickname" name="nickname" maxlength="80" required placeholder="例如：小安">
+        <label for="vote-choice">想吃哪一個？</label>
+        <select id="vote-choice" name="choice" required>
+          <option value="">請選擇</option>
+          <option value="選項 A">選項 A</option>
+          <option value="選項 B">選項 B</option>
+          <option value="選項 C">選項 C</option>
+        </select>
+        <button type="submit">送出投票</button>
+        <p class="vote-status" id="vote-status" role="status" aria-live="polite"></p>
+      </form>
+      <ul class="vote-list" id="vote-list" aria-label="目前投票"></ul>
+    </section>
     <figure style="margin:26px 0 0; text-align:center;">
       <img src="tainan-trip-qr.png" alt="台南之旅網站 QR 碼" style="display:block; width:min(100%, 260px); height:auto; margin:0 auto; border-radius:12px;">
       <figcaption style="margin-top:8px; color:var(--muted); font-size:.9rem;">掃描 QR 碼開啟行程</figcaption>
     </figure>
   </main>
+  <script>
+    (() => {
+      const saved = JSON.parse(localStorage.getItem('tainan-trip-checks') || '{}');
+      const buttons = document.querySelectorAll('[data-view]');
+      const days = document.querySelectorAll('.day[aria-labelledby^="day"]');
+      const checks = document.querySelectorAll('[data-stop]');
+
+      checks.forEach((input) => {
+        input.checked = saved[input.dataset.stop] === true;
+        input.closest('.stop').classList.toggle('is-done', input.checked);
+        input.addEventListener('change', () => {
+          saved[input.dataset.stop] = input.checked;
+          localStorage.setItem('tainan-trip-checks', JSON.stringify(saved));
+          input.closest('.stop').classList.toggle('is-done', input.checked);
+        });
+      });
+
+      buttons.forEach((button) => {
+        button.addEventListener('click', () => {
+          const view = button.dataset.view;
+          buttons.forEach((item) => item.setAttribute('aria-pressed', item === button ? 'true' : 'false'));
+          days.forEach((day) => { day.hidden = view !== 'all' && day.getAttribute('aria-labelledby') !== view; });
+          localStorage.setItem('tainan-trip-view', view);
+        });
+      });
+
+      const initial = localStorage.getItem('tainan-trip-view') || 'day1';
+      const initialButton = document.querySelector(`[data-view="${initial}"]`) || document.querySelector('[data-view="day1"]');
+      initialButton.click();
+
+      const supabaseUrl = 'https://wglwmgwtiqfwpkgrtrxn.supabase.co';
+      const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndnbHdtZ3d0aXFmd3BrZ3J0cnhuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTEyNjA0MjMsImV4cCI6MjEwNjgzNjQyM30.KhcJyza0ycKNBY5qSdnazlDgCwsxL9l7EoGhuoL1LhM';
+      const voteForm = document.querySelector('#vote-form');
+      const voteList = document.querySelector('#vote-list');
+      const voteStatus = document.querySelector('#vote-status');
+      const voteHeaders = { apikey: supabaseKey, Authorization: `Bearer ${supabaseKey}` };
+
+      const renderVotes = (votes) => {
+        voteList.replaceChildren();
+        votes.forEach((vote) => {
+          const item = document.createElement('li');
+          item.className = 'vote-item';
+          const name = document.createElement('span');
+          name.textContent = vote.nickname;
+          const choice = document.createElement('strong');
+          choice.textContent = vote.choice;
+          item.append(name, choice);
+          voteList.append(item);
+        });
+      };
+
+      const loadVotes = async () => {
+        try {
+          const response = await fetch(`${supabaseUrl}/rest/v1/dinner_votes?select=id,nickname,choice&order=id.asc`, { headers: voteHeaders });
+          if (!response.ok) throw new Error('load failed');
+          renderVotes(await response.json());
+        } catch {
+          voteStatus.textContent = '目前無法載入投票，請稍後再試。';
+        }
+      };
+
+      voteForm.addEventListener('submit', async (event) => {
+        event.preventDefault();
+        const button = voteForm.querySelector('button');
+        const nickname = voteForm.nickname.value.trim();
+        const choice = voteForm.choice.value;
+        button.disabled = true;
+        voteStatus.textContent = '送出中…';
+        try {
+          const response = await fetch(`${supabaseUrl}/rest/v1/dinner_votes`, {
+            method: 'POST',
+            headers: { ...voteHeaders, 'Content-Type': 'application/json', Prefer: 'return=representation' },
+            body: JSON.stringify({ nickname, choice })
+          });
+          if (!response.ok) throw new Error('submit failed');
+          voteForm.reset();
+          voteStatus.textContent = '投票成功！';
+          await loadVotes();
+        } catch {
+          voteStatus.textContent = '投票沒有送出，請稍後再試。';
+        } finally {
+          button.disabled = false;
+        }
+      });
+
+      loadVotes();
+    })();
+  </script>
 </body>
 </html>
